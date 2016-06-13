@@ -1,6 +1,6 @@
 from pprint import pprint
 from os import listdir
-from fname import fname
+from fnmatch import fnmatch
 
 # Until pyvenv-3.4 is fixed on centos 7 support python 2.
 try:
@@ -8,23 +8,20 @@ try:
 except ImportError:
     from ConfigParser import RawConfigParser
 
-#from logging import Formatter, getLogger, DEBUG, INFO, WARN
-#from logging.handlers import SysLogHandler, RotatingFileHandler
-
 from bottle import default_app, route, run
 from bottle import request, response, template, static_file
 
 config = RawConfigParser()
 config.readfp(open('./picam_app.cfg'))
-#config.read(['/et.cfg', './picam_app.local.cfg'])
 
 
 def get_video_list(video_dir):
     videos = []
     for filename in listdir(video_dir):
-        if fname(filename, '*.avi'):
+        if fnmatch(filename, '*.avi'):
             videos.append({
                 'filename': filename,
+
             })
     return videos
 
@@ -44,7 +41,7 @@ def picam_index():
     return template(
         'index',
         picam_config=picam_data,
-        videos=videos
+        videos=video_list
     )
 
 

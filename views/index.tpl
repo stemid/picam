@@ -43,10 +43,17 @@
       </div>
     </div>
 
-    {% if videos | length > 0 %}
     <div class="row" style="margin-top:1%">
+    % if len(videos):
+      <ul>
+        % for video in videos:
+        <li><a href="#{{video['filename']}}" title="Video {{video['filename']}}">{{video['filename']}}</a></li>
+        % end
+      </ul>
+    % else:
+    <p>No saved media files found</p>
+    % end
     </div>
-    {% endif %}
 
   </div>
 
